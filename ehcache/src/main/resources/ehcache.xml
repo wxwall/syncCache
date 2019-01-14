@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+
+    <diskStore path="D:\cache" />
+
+    <cache name="userCache"
+           maxElementsInMemory="10000"
+           maxElementsOnDisk="0"
+           eternal="true"
+           overflowToDisk="true"
+           diskSpoolBufferSizeMB="20"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+                                   properties="replicateAsynchronously=true, replicatePuts=true, replicateUpdates=true,replicateUpdatesViaCopy= true, replicateRemovals= true " />
+    </cache>
+
+    <cacheManagerPeerProviderFactory
+            class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+            properties="peerDiscovery=manual,rmiUrls=//127.0.0.1:8091/userCache|rmiUrls=//127.0.0.1:8090/userCache"/>
+    <cacheManagerPeerListenerFactory
+            class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
+            properties="hostName=127.0.0.1,port:8090|hostName=127.0.0.1,port:8091" />
+</ehcache>
